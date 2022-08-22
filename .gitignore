@@ -1,0 +1,51 @@
+# Byte-compiled / optimized / DLL files
+__pychache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Test report data
+.allure_history_backups
+allure-results
+allure_data
+allure[-_]report
+geckodriver.log
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# Environments
+.env
+.venv
+env/
+venv/
+
+# mypy
+.mypy_cache
+.dmypy.json
+dmypy.json
+
+# Settings
+.vscode
+.idea
+
+# Secrets files
+.env*
+!.env.skel
+
+# Vim
+*.sw*
+_vimrc_local.vim
+
+# docs
+docs/build

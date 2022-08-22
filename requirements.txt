@@ -1,0 +1,2 @@
+screenpy[selenium,allure,requests,appium]>=4.0.0
+pytest
