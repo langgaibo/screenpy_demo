@@ -20,6 +20,7 @@ function setenv {
     fi
 }
 
+# This attaches what will become our exit status when we `run` the tests later.
 function run {
     "$@"
     run_status=$?

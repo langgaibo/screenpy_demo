@@ -1,0 +1,2 @@
+{'level': 'DEBUG', 'message': 'https://www.saucedemo.com/ - [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o', 'source': 'recommendation', 'timestamp': 1661224871131}
+{'level': 'INFO', 'message': 'https://www.saucedemo.com/static/js/main.3db41035.chunk.js 0:47187 "Content is cached for offline use."', 'source': 'console-api', 'timestamp': 1661224871750}
