@@ -1,5 +1,6 @@
 # Byte-compiled / optimized / DLL files
-__pychache__/
+__pycache__
+__pycache__/
 *.py[cod]
 *$py.class
 
@@ -11,6 +12,8 @@ pip-log.txt
 pip-delete-this-directory.txt
 
 # Test report data
+debug/
+*.png
 .allure_history_backups
 allure-results
 allure_data
