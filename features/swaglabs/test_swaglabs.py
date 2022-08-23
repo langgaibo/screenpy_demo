@@ -1,5 +1,5 @@
 """
-Tests of key features in the SwagLab app!
+Tests of key features in the SwagLabs app!
 """
 
 from screenpy import Actor, given, then, when

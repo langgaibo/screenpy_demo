@@ -7,15 +7,14 @@ from datetime import datetime
 from typing import Any, Generator
 
 import pytest
-import requests
-from allure_commons.types import AttachmentType
+# from allure_commons.types import AttachmentType
 from screenpy import Actor
-from screenpy_requests.abilities import MakeAPIRequests
+# from screenpy_requests.abilities import MakeAPIRequests
 from screenpy_selenium.abilities import BrowseTheWeb
 from screenpy.actions import Pause
 from screenpy_selenium.actions import SaveConsoleLog, SaveScreenshot
 from screenpy.pacing import aside
-from selenium.common.exceptions import WebDriverException
+# from selenium.common.exceptions import WebDriverException
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
