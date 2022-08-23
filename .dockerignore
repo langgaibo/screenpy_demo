@@ -1,0 +1,3 @@
+.allure_history_backups
+.git
+.pytest_cache

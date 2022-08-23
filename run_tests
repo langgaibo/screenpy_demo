@@ -1,0 +1,50 @@
+#! /bin/bash
+
+# For now, expect to be run from the root of the repo.
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+export PYTHONPATH=$SCRIPT_DIR/..:$PATH
+
+
+function setenv {
+    # Use env file if it exists
+    ENV_VAR_PATH="$SCRIPT_DIR/config/env_vars"
+    ENVFILE_PATH="$SCRIPT_DIR/.env"
+
+    if test -f $ENVFILE_PATH; then
+        cp $ENV_VAR_PATH $ENVFILE_PATH
+        # TODO: Use encryption once sops is added
+        # info "Decrypting env vars"
+        # sops -d $ENV_VAR_PATH > $ENVFILE_PATH
+    else
+        warn "Could not find config/env_vars"
+    fi
+}
+
+function run {
+    "$@"
+    run_status=$?
+}
+
+# Start Xvfb
+if [[ -x "/usr/bin/Xvfb" ]]; then
+    rm -f /tmp/.X*lock
+    export DISPLAY=:99
+    sudo Xvfb $DISPLAY -screen 0 1920x1080x24 -dpi 240 -ac +extension RANDR &
+else
+    debug "No Xvfb found. Starting without the virtual frame buffer."
+fi
+
+NOW=$(date +"%m-%d-%yT%H%M%S")
+setenv
+run python3 -m pytest --alluredir allure-results/ "@" | tee ./debug/runlog_"$NOW".txt
+test_status=$run_status
+
+# Ensure we keep our history intact
+([ -d "allure_report" ] && cp -a ./allure_report/history ./allure-results/history) || ([ -d ".allure_history_backups" ] && cp -a $(ls -t .allure_history_backups/ | head -1) ./allure-results/history)
+[ -d ".allure_history_backups" ] || mkdir .allure_history_backups
+[ -d "allure_report" ] && cp -a ./allure_report/history ./.allure_history_backups/"$NOW"
+
+run allure generate --clean ./allure-results -o ./allure_report
+info "Open the report using 'allure open allure_report'."
+
+exit $test_status
