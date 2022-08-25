@@ -1,3 +1,9 @@
 #! /bin/bash
 
-python3 -m pytest --log-cli-level=INFO
+# Start Xvfb - this was the problem causing chrome to crash (nowhere to render the browser!)
+sudo rm -f /tmp/.X*lock
+export DISPLAY=:99
+sudo Xvfb $DISPLAY -screen 0 1920x1080x24 -dpi 240 -ac +extension RANDR &
+
+# run tests
+python3 -m pytest $@ --log-cli-level=INFO
