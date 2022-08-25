@@ -1,5 +1,29 @@
 # Screenpy Demo Stack
 
+## Installation
+
+You'll want chrome, chromedriver, and xvfb.
+To install required dependencies, run
+`pip install -r requirements.txt`
+
+## Running tests
+
+From the root of the repo, run:
+`./test {desired directory or test file}`
+
+Examples:
+
+```shell
+# all tests
+./test
+
+# all swaglabs test suites
+./test features/swaglabs
+
+# only the_innerent test file
+./test features/the_innernet/test_theinnernet.py
+```
+
 ## What is this? What is it for?
 
 This is a general-purpose implementation of the [Screenpy](https://github.com/ScreenPyHQ) Automated testing framework.
