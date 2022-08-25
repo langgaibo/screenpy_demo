@@ -68,8 +68,6 @@ def test_enable_text_field(Selene: Actor) -> None:
         Eventually(Enter.the_text(test_text).into_the(TEXT_FIELD)),
     )
     then(Selene).should(
-        # I wrote a custom Question to get the contents of an input field, see
-        #  questions/input_text.py
         See.the(InputText.of_the(TEXT_FIELD), ContainsTheText(test_text)),
     )
 
@@ -89,7 +87,5 @@ def test_disable_text_field(Selene: Actor) -> None:
         Wait.for_the(WAITING_TEXT).to_disappear(),
     )
     then(Selene).should(
-        # I wrote a custom resolution function for this, see
-        #  resolutions/is_enabled.py
         See.the(Element(TEXT_FIELD), IsNot(Enabled()))
     )
