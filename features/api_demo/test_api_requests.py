@@ -1,5 +1,5 @@
 """
-Tests of the Request Bin website
+Tests of various API endpoint functionality
 """
 
 import pytest
