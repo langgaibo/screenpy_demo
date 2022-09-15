@@ -9,7 +9,7 @@ from typing import Any, Generator
 import pytest
 # from allure_commons.types import AttachmentType
 from screenpy import Actor
-# from screenpy_requests.abilities import MakeAPIRequests
+from screenpy_requests.abilities import MakeAPIRequests
 from screenpy_selenium.abilities import BrowseTheWeb
 from screenpy.actions import Pause
 from screenpy_selenium.actions import SaveConsoleLog, SaveScreenshot
@@ -41,3 +41,10 @@ def Selene() -> Generator:
         SaveConsoleLog.as_(js_path)
     )
     the_actor.exit()
+
+@pytest.fixture
+def Arlong() -> Generator:
+    """An actor who can make API requests."""
+    the_actor = Actor.named("Arlong").who_can(MakeAPIRequests())
+    yield the_actor
+    the_actor.exit_stage_left()
