@@ -1,14 +1,11 @@
 """
-Tests of various API endpoint functionality
+Tests against Automation Panda's toy Device Registry app https://github.com/AutomationPanda/device-registry
 """
-
-import pytest
 
 from screenpy import Actor, and_, given, then, when
 from screenpy.actions import See
 from screenpy.resolutions import EqualTo, IsEqualTo, IsNot, ContainsTheEntry, ContainsTheKey
 from screenpy_requests.actions import (
-    AddHeader,
     SendAPIRequest,
     SendGETRequest,
     SendDELETERequest,
@@ -60,33 +57,7 @@ def test_add_device(Arlong: Actor) -> None:
     when(Arlong).attempts_to(
         SendPOSTRequest.to(DEVICE_ENDPOINT).with_(json=PorchLight.get_device_dict()),
     )
-    and_(Arlong).attempts_to(
-        SendGETRequest.to(DEVICE_ENDPOINT),
-    )
     then(Arlong).should(
         See.the(StatusCodeOfTheLastResponse(), IsEqualTo(200)),
-        See.the(BodyOfTheLastResponse(), ContainsTheKey("devices")),
+        See.the(BodyOfTheLastResponse(), ContainsTheEntry(name="Front Porch Light")),
     )
-
-# # Example of a single test iterating through parameters via parametrize
-# @pytest.mark.parametrize("action", ["DELETE", "GET", "PATCH", "POST", "PUT"])
-# def test_actions(action: str, Arlong: Actor) -> None:
-#     """All HTTP verb requests respond with 200s."""
-#     when(Arlong).attempts_to(SendAPIRequest(action, f"{BASE_URL}/{action.lower()}"))
-
-#     then(Arlong).should(See.the(StatusCodeOfTheLastResponse(), IsEqualTo(200)))
-
-
-# def test_base_64_decoder(Arlong: Actor) -> None:
-#     """Base64 decoder decodes!"""
-#     test_string = "SW4gYSBiaW5nIGNvdW50cnkgeW91ciBzZWFyY2ggaXMgbGlua2VkIHRvIHlvdQ=="
-
-#     when(Arlong).attempts_to(SendGETRequest.to(f"{BASE64_URL}/{test_string}"))
-
-#     then(Arlong).should(
-#         See.the(StatusCodeOfTheLastResponse(), IsEqualTo(200)),
-#         See.the(
-#             BodyOfTheLastResponse(),
-#             ReadsExactly("In a bing country your search is linked to you")
-#         )
-#     )
