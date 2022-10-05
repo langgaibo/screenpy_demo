@@ -37,9 +37,9 @@ def Selene() -> Generator:
     )
     the_actor.exit()
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def Arlong() -> Generator:
-    """An actor who can make API requests."""
+    """Create an actor who can make API requests."""
     the_actor = Actor.named("Arlong").who_can(MakeAPIRequests())
     yield the_actor
-    the_actor.exit_stage_left()
+    the_actor.exit()
