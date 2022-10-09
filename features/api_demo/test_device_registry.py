@@ -88,11 +88,11 @@ def test_missing_device_field(Arlong: Actor) -> None:
 
 def test_invalid_type_value(Arlong: Actor) -> None:
     """Invalid data type should return an error."""
-    int_serial_device = Thermostat.get_device_dict()
-    int_serial_device["serial_number"] = {}
+    broken_serial_device = Thermostat.get_device_dict()
+    broken_serial_device["serial_number"] = {}
     given(Arlong).was_able_to(GetAuthToken.using(Pythonista.login, Pythonista.password))
     when(Arlong).attempts_to(
-        SendPOSTRequest.to(DEVICE_ENDPOINT).with_(json=int_serial_device)
+        SendPOSTRequest.to(DEVICE_ENDPOINT).with_(json=broken_serial_device)
     )
     then(Arlong).should(
         See.the(StatusCodeOfTheLastResponse(), IsEqualTo(500)),
