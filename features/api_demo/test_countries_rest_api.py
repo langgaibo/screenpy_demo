@@ -1,23 +1,35 @@
 """
-Tests derived from Boris J's tutorial on dealing with
-complex JSON dicts found here: https://towardsdatascience.com/how-do-i-extract-nested-data-in-python-4e7bed37566a
+Tests derived from Boris J's tutorial on dealing with complex JSON dicts found here:
+https://towardsdatascience.com/how-do-i-extract-nested-data-in-python-4e7bed37566a
 """
 
 import pytest
 
 from screenpy import Actor, given, then, when
 from screenpy.actions import Pause, See, SeeAllOf
-from screenpy.pacing import aside, the_narrator
+from screenpy.pacing import the_narrator
 from screenpy.resolutions import Equals, IsEqualTo, ContainsTheItem
 from screenpy_requests.actions import SendGETRequest
 from screenpy_requests.questions import BodyOfTheLastResponse
 
-from constants.rest_countries_constants import countries
+from constants.rest_countries_constants import (
+    ALL_COUNTRIES,
+    BY_NAME,
+    countries,
+    BY_FULL_NAME,
+)
 
-BASE_URL = "https://restcountries.com/v3.1"
-ALL_COUNTRIES = f"{BASE_URL}/all"
-BY_NAME = f"{BASE_URL}/name"
-FULL_NAME = "?fullText=true"
+# who's that Qatarmon?
+def test_qatar_ltd_field(Arlong: Actor) -> None:
+    """It's uh"""
+    target_value = "قطر."
+    given(Arlong).was_able_to(SendGETRequest.to(f"{BY_NAME}/Qatar/{BY_FULL_NAME}"))
+    with the_narrator.off_the_air():
+        response = BodyOfTheLastResponse().answered_by(Arlong).pop()
+    target_field = response["tld"][1]
+    then(Arlong).should(
+        See.the(target_field, Equals(target_value))
+    )
 
 # can you bike between these countries?
 def test_how_many_netherlands(Arlong: Actor) -> None:
@@ -35,6 +47,7 @@ def test_how_many_netherlands(Arlong: Actor) -> None:
         See.the(nether_lands, ContainsTheItem("Bonaire, Sint Eustatius and Saba")),
     )
 
+
 # Is America among the countries recognized by the UN?
 def test_is_america_recognized(Arlong: Actor) -> None:
     """Has the empire fallen?"""
@@ -49,7 +62,7 @@ def test_is_america_recognized(Arlong: Actor) -> None:
         else:
             pass
     
-    when(Arlong).attempts_to(
+    then(Arlong).should(
         See.the(un_members, ContainsTheItem("United States"))
     )
 
@@ -58,7 +71,7 @@ def test_is_america_recognized(Arlong: Actor) -> None:
 def test_currency_codes(Arlong: Actor, country_name, codes, symbols) -> None:
     """ensure each country's currency matches the code on file"""
     given(Arlong).was_able_to(
-        SendGETRequest.to(f"{BY_NAME}/{country_name}{FULL_NAME}"),
+        SendGETRequest.to(f"{BY_NAME}/{country_name}{BY_FULL_NAME}"),
     )
     with the_narrator.off_the_air():
         response = BodyOfTheLastResponse().answered_by(Arlong).pop()
@@ -82,11 +95,18 @@ def test_currency_codes(Arlong: Actor, country_name, codes, symbols) -> None:
 def test_build_currency_param_list(Arlong: Actor) -> None:
     """We go way out of our way here to do something stupidly complex. The point is to
     deal with a lot of bullshit traversing in a big nasty dict."""
+
+    country_names = [
+        'Tuvalu', 'Lebanon', 'Burkina Faso', 'British Virgin Islands', 'El Salvador',
+        'Timor-Leste', 'Italy', 'Palestine', 'Guam', 'Faroe Islands', 'Afghanistan',
+        'São Tomé and Príncipe', 'China', 'Panama', 'Venezuela', 'Micronesia',
+        'French Southern and Antarctic Lands', 'Finland', 'Colombia', 'Bhutan',
+        'Jersey', 'Mexico', 'Denmark', 'Isle of Man'
+    ]
+
     given(Arlong).was_able_to(SendGETRequest.to(ALL_COUNTRIES))
     with the_narrator.off_the_air():
         response = BodyOfTheLastResponse().answered_by(Arlong)
-    
-    country_names = ['Tuvalu', 'Lebanon', 'Burkina Faso', 'British Virgin Islands', 'El Salvador', 'Timor-Leste', 'Italy', 'Palestine', 'Guam', 'Faroe Islands', 'Afghanistan', 'São Tomé and Príncipe', 'China', 'Panama', 'Venezuela', 'Micronesia', 'French Southern and Antarctic Lands', 'Finland', 'Colombia', 'Bhutan', 'Jersey', 'Mexico', 'Denmark', 'Isle of Man']
 
     fuckers_trick = []
     for item in range(len(response)):
