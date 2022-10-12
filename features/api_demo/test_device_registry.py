@@ -20,12 +20,12 @@ from screenpy_requests.questions import (
     StatusCodeOfTheLastResponse,
 )
 
-from constants.device_registry_constants import (
+from test_data.device_registry_constants import (
     Pythonista,
     PorchLight,
     Thermostat,
 )
-from constants.device_registry_data_classes import DeviceData
+from test_data.device_registry_data_classes import DeviceData
 from tasks.api_demo import AddNewDevice, DeleteDevice, GetAuthToken
 from ui.api_demo.device_manager import AUTH_ENDPOINT, DEVICE_ENDPOINT
 
@@ -42,17 +42,16 @@ def test_invalid_auth_credentials(Arlong: Actor) -> None:
         ),
     )
 
-
 def test_post_nothing(Arlong: Actor) -> None:
     """Making an empty POST call should result in a 400 error."""
-    given(Arlong).was_able_to(GetAuthToken.using(Pythonista.login, Pythonista.password))
+    given(Arlong).was_able_to(GetAuthToken.as_(Pythonista))
     when(Arlong).attempts_to(SendPOSTRequest.to(DEVICE_ENDPOINT))
     then(Arlong).should(See.the(StatusCodeOfTheLastResponse(), IsEqualTo(400)))
 
 
 def test_add_device(Arlong: Actor) -> None:
     """Making a properly formatted POST call to add a device should work."""
-    given(Arlong).was_able_to(GetAuthToken.using(Pythonista.login, Pythonista.password))
+    given(Arlong).was_able_to(GetAuthToken.as_(Pythonista))
     when(Arlong).attempts_to(
         AddNewDevice(PorchLight),
     )
@@ -72,7 +71,7 @@ def test_missing_device_field(Arlong: Actor) -> None:
         "model": "Noside",
         "serial_number": "-1"
     }
-    given(Arlong).was_able_to(GetAuthToken.using(Pythonista.login, Pythonista.password))
+    given(Arlong).was_able_to(GetAuthToken.as_(Pythonista))
     when(Arlong).attempts_to(
         SendPOSTRequest.to(DEVICE_ENDPOINT).with_(json=nameless_light)
     )
@@ -90,7 +89,7 @@ def test_invalid_type_value(Arlong: Actor) -> None:
     """Invalid data type should return an error."""
     broken_serial_device = Thermostat.get_device_dict()
     broken_serial_device["serial_number"] = {}
-    given(Arlong).was_able_to(GetAuthToken.using(Pythonista.login, Pythonista.password))
+    given(Arlong).was_able_to(GetAuthToken.as_(Pythonista))
     when(Arlong).attempts_to(
         SendPOSTRequest.to(DEVICE_ENDPOINT).with_(json=broken_serial_device)
     )
