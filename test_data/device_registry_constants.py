@@ -1,8 +1,15 @@
 """Constant values useful for testing the device registry."""
 
+import os
+
 from .device_registry_data_classes import UserData, DeviceData
 
 #Static test users
+AdminUser = UserData(
+    login = os.getenv("ADMIN_USERNAME", ""),
+    password = os.getenv("ADMIN_PASSWORD", ""),
+)
+
 Pythonista = UserData(
     login="pythonista",
     password="I<3testing",
