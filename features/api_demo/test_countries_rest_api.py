@@ -12,7 +12,7 @@ from screenpy.resolutions import Equals, IsEqualTo, ContainsTheItem
 from screenpy_requests.actions import SendGETRequest
 from screenpy_requests.questions import BodyOfTheLastResponse
 
-from constants.rest_countries_constants import (
+from test_data.rest_countries_constants import (
     ALL_COUNTRIES,
     BY_NAME,
     countries,
