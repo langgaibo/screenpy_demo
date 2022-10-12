@@ -7,6 +7,7 @@ from datetime import datetime
 from typing import Any, Generator
 
 import pytest
+from dotenv import load_dotenv
 from screenpy import Actor
 from screenpy_requests.abilities import MakeAPIRequests
 from screenpy_selenium.abilities import BrowseTheWeb
@@ -17,6 +18,8 @@ from selenium.webdriver.chrome.options import Options
 
 CHROME_OPTIONS = Options()
 CHROME_OPTIONS.set_capability("goog:loggingPrefs", {"browser": "ALL"})
+
+load_dotenv('.env')
 
 @pytest.fixture(scope="function")
 def Selene() -> Generator:
