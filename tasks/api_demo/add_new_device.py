@@ -7,7 +7,7 @@ from screenpy.actions import MakeNote
 from screenpy.pacing import beat
 from screenpy_requests.actions import SendPOSTRequest
 from screenpy_requests.questions import BodyOfTheLastResponse
-from constants.device_registry_data_classes import DeviceData
+from test_data.device_registry_data_classes import DeviceData
 from ui.api_demo.device_manager import DEVICE_ENDPOINT
 
 
